@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment_3A_Week_5</title>
+    <style>
+        body{
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        #menu{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 80%;
+            margin: auto;
+            gap: 50px;
+        }
+
+        #menu_column{
+            flex: 1;
+            border: solid black;
+            width: 20rem;
+            height: 20rem;
+        }
+
+        h1{
+            text-align: center;
+            margin: 0;
+            margin-top: 40px;
+            margin-bottom: 10px;
+            font-size: 60px;
+        }
+
+        #menu_list {
+            list-style: none;
+            text-align: center;
+            padding: 10;
+            /* margin-left: 600px; */
+        }
+
+        #menu_list li {
+            padding: 20px 0;
+            font-size: 30px;
+        }
+
+        /*need to fix logo so it is fixed*/
+        .title-container {
+            display: flex;
+            justify-content: center; /* Centers the title and image together */
+            align-items: center; /* Aligns them at the same vertical level */
+            gap: 15px; /* Adjust space between title and hotdog */
+            margin-top: 40px;
+        }
+
+        .hotdogLogo {
+            position: absolute;
+            width: 80px; /* Adjust the size as needed */
+            height: auto;
+            left: 920px;
+            top: 40px;
+        }
+
+        #cart_container{
+            flex: 1; /* Right side: cart and buttons */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align everything to the left */
+            border: solid black;
+            margin-left: 1rem;
+            width: 10rem;
+            height: 20rem;
+            align-items: center;
+            font-size: 30px; 
+        }
+
+        #add_Cart_Container{
+            display: flex;
+            flex-direction: row;
+            /* justify-content: space-between; */
+        }
+
+        #add_to_cart{
+            width: auto;
+            height: 30px;
+            margin-top: 10px;
+
+        }
+
+        #check_out{
+            width: auto;
+            height: 30px;
+            margin-top: 280px;
+            position: absolute;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h1>Joe's Hotdogs</h1>
+        <img class="hotdogLogo" src="Hot-dog-sandwich-on-transparent-background-PNG.png" alt="Hotdog Logo"/>
+    </div>
+    <!-- <img class="hotdogLogo" src="Hot-dog-sandwich-on-transparent-background-PNG.png" alt="Hotdog Logo"/> -->
+    <div class="container">
+        <div id="menu">
+            <script>
+                window.onload = function() {
+                    let arr = { "hotdogs": 4.00, "fries": 3.50, "soda": 1.50, "saurkraut": 1.00 };
+                    let cart = { "hotdogs": 0, "fries": 0, "soda": 0, "saurkraut": 0 };
+
+                    let menu = document.getElementById("menu");
+                    let add_Cart = document.getElementById("add_to_cart");
+                    let check_Out = document.getElementById("check_out");
+                    let menu_List = document.getElementById("menu_list");
+
+                    // Loop through menu items and display them
+                    for (let [key, value] of Object.entries(arr)) {
+                        let listItem = document.createElement("li");
+                        listItem.textContent = `${key} : $${value.toFixed(2)}`; //make sure has two decimal points
+                        menu_List.appendChild(listItem);
+                    }
+
+                    function updateCartDisplay(){
+                        let quantitiesOfItems = document.getElementById("quantities_of_items");
+                        quantitiesOfItems.innerHTML = ""; // AFTER DEFINED, Clears previous display
+                        for (let [key, value] of Object.entries(cart)){
+                            // console.log(`${key}: ${value}`);
+                            if (value > 0){
+                                quantitiesOfItems.innerHTML += (`${key}: ${value} <br>`);
+                            }
+                        }
+                    }
+                    updateCartDisplay();
+
+
+                    // Event listener for adding items to cart
+                    add_Cart.addEventListener("click", function() {
+                        //alert("HELLO");
+                        let inputItem = document.getElementById("item_name").value.trim();
+                        inputItem = inputItem.toLowerCase(); //case insensitive
+                        console.log(inputItem);
+                        if(inputItem == ""){
+                            //alert("empty!");
+                        } if(Object.keys(cart).includes(inputItem)) {
+                            cart[inputItem]++; //adds one to the
+                            updateCartDisplay();
+                        } else{ //object.keys acesses the strings of key of object array
+                            //then checks if it any matches the the inputItem
+                            //alert("not option!");
+                        }
+
+                        //when item is added update dynamically the array of quanitities
+                        //display in shopping cart
+
+                    });
+
+                    check_Out.addEventListener("click", function(){
+                        let total_Cost = 0;
+                        let receipt = "Checkout Summary:\n";
+                        //alert("checkingggggg");
+                        for (let [key, value] of Object.entries(cart)){
+                                // console.log(`${key}: ${value}`);
+                                if (value > 0){
+                                    item_Cost = cart[key] * arr[key];
+                                    total_Cost += item_Cost;
+                                    receipt += `${key}: ${value} x $${arr[key]} = $${item_Cost.toFixed(2)}\n`; // Add item details to receipt with proper numeric notation for cash
+                                    //console.log(item_Cost);
+                                }
+                            }
+                            console.log(item_Cost);   
+                            console.log(total_Cost);
+                            receipt += `\nTotal Cost: $${total_Cost.toFixed(2)}`; // Append total cost outside for loop
+
+                            //reset everything to zero
+                            alert(receipt); // Show final receipt in alert
+                            cart = { "hotdogs": 0, "fries": 0, "soda": 0, "saurkraut": 0 };
+                            document.getElementById("item_name").value = "";
+                            total_Cost = 0;
+                            updateCartDisplay();
+                    });
+                };
+            </script>
+            <div id="menu_column">
+                <ul id="menu_list"></ul>
+            </div>
+            <div id="cart_container">
+                <div id="add_Cart_Container">
+                    <form>
+                        <input type="text" id="item_name" placeholder="item name" name="item_name"><br><br>
+                    </form>
+                    <button id="add_to_cart">Add to CART</button>
+                </div>
+                <div> 
+                    <div id="shopping_cart">Shopping Cart</div>
+                    <div id="quantities_of_items"></div>
+                </div>
+                <button id="check_out">Checkout</button>  
+            </div>       
+        </div>
+    </div>
+</body>
+</html>
