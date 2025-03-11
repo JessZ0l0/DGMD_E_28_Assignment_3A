@@ -1,6 +1,9 @@
 # DGMD_E_28_Assignment_3A
 This is the homework for Assignment 3A of HES DGMD-28. 
 
+## Link:
+https://jessz0l0.github.io/DGMD_E_28_Assignment_3A/
+
 ## Question:
 * ## What are a) the most interesting and b) the most surprising Javascript constructs we have learned in the past few weeks.
   
